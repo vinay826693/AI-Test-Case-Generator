@@ -3,7 +3,7 @@ name: AI Test Generator CI
 on:
   push:
     branches:
-      - '**'
+      - main
 
   pull_request:
     branches:
