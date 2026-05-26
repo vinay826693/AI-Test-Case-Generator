@@ -6,7 +6,8 @@ on:
       - '**'
 
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   e2e-test:
@@ -23,39 +24,50 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Frontend Dependencies
-        working-directory: ./frontend
-        run: npm ci
-
+      # Backend dependencies
       - name: Install Backend Dependencies
         working-directory: ./backend
         run: npm ci
 
+      # Frontend dependencies
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      # Automation dependencies
       - name: Install Automation Dependencies
         working-directory: ./automation
         run: npm ci
 
+      # Playwright browsers
       - name: Install Playwright Browsers
         working-directory: ./automation
         run: npx playwright install --with-deps
 
+      # Start backend with secret
       - name: Start Backend
         working-directory: ./backend
-        run: npm start &
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: npm run dev &
 
+      # Start frontend
       - name: Start Frontend
         working-directory: ./frontend
         run: npm run dev &
 
+      # Wait until apps are ready
       - name: Wait for Applications
         run: |
           npx wait-on http://localhost:5000
           npx wait-on http://localhost:5173
 
+      # Run Playwright tests
       - name: Run Playwright Tests
         working-directory: ./automation
         run: npx playwright test
 
+      # Upload Playwright report
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
         if: always()
@@ -63,6 +75,7 @@ jobs:
           name: playwright-report
           path: automation/playwright-report/
 
+      # Upload custom dashboard
       - name: Upload Custom Dashboard
         uses: actions/upload-artifact@v4
         if: always()
@@ -72,6 +85,7 @@ jobs:
             automation/playwright-report/execution-dashboard.html
             automation/playwright-report/logo.jpeg
 
+      # Upload failed test artifacts
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         if: failure()
