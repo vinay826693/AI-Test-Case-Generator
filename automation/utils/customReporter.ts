@@ -23,20 +23,43 @@ class CustomReporter implements Reporter {
   private failed = 0;
   private skipped = 0;
 
+  private processedTests =
+    new Set<string>();
+
+
   onTestEnd(
     test: TestCase,
     result: TestResult
   ) {
 
-    // Ignore retry attempts
-    const isFinalAttempt =
-      result.retry === test.retries;
+    // Unique id for each test
+    const testId =
+      test.titlePath().join(' > ');
 
-    if (!isFinalAttempt) {
+    // Ignore retries
+    if (
+      this.processedTests.has(
+        testId
+      )
+    ) {
       return;
     }
 
-    switch (result.status) {
+    // Count only final result
+    if (
+      result.retry <
+      test.retries
+    ) {
+      return;
+    }
+
+    this.processedTests.add(
+      testId
+    );
+
+    switch (
+      result.status
+    ) {
 
       case 'passed':
         this.passed++;
@@ -52,12 +75,15 @@ class CustomReporter implements Reporter {
     }
   }
 
-  onEnd(result: FullResult) {
+  onEnd(
+    result: FullResult
+  ) {
 
     const currentRun = {
 
       runDate:
-        new Date().toISOString(),
+        new Date()
+        .toISOString(),
 
       projectName:
         'AI_TEST_CASE_GENERATOR',
@@ -73,7 +99,8 @@ class CustomReporter implements Reporter {
 
       duration:
         `${(
-          result.duration / 1000
+          result.duration /
+          1000
         ).toFixed(2)}s`
     };
 
@@ -86,50 +113,6 @@ class CustomReporter implements Reporter {
       currentRun
     );
 
-    if (comparison) {
-
-      const getArrow = (
-        value:number
-      ) => {
-
-        if (value > 0)
-          return '↑';
-
-        if (value < 0)
-          return '↓';
-
-        return '→';
-      };
-
-      console.log(
-        '\n===== Execution Comparison ====='
-      );
-
-      console.log(
-        `Passed: ${getArrow(
-          comparison.passedDiff
-        )} ${Math.abs(
-          comparison.passedDiff
-        )}`
-      );
-
-      console.log(
-        `Failed: ${getArrow(
-          comparison.failedDiff
-        )} ${Math.abs(
-          comparison.failedDiff
-        )}`
-      );
-
-      console.log(
-        `Skipped: ${getArrow(
-          comparison.skippedDiff
-        )} ${Math.abs(
-          comparison.skippedDiff
-        )}`
-      );
-    }
-
     const reportData = {
 
       projectName:
@@ -138,7 +121,8 @@ class CustomReporter implements Reporter {
       currentRun,
 
       previousRun:
-        comparison?.previous || null,
+        comparison?.previous ||
+        null,
 
       comparison
     };
@@ -159,11 +143,23 @@ class CustomReporter implements Reporter {
       )
     );
 
+    generateDashboard();
+
     console.log(
-      'Comparison report generated'
+      '\n===== Dashboard Summary ====='
     );
 
-    generateDashboard();
+    console.log(
+      `Passed: ${this.passed}`
+    );
+
+    console.log(
+      `Failed: ${this.failed}`
+    );
+
+    console.log(
+      `Skipped: ${this.skipped}`
+    );
 
     console.log(
       'Execution dashboard generated'
