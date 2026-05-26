@@ -37,7 +37,6 @@ await this.generateButton.click();
 }
 
 async verifyTestCaseGenerated(){
-await expect(this.positiveText)
-.toBeVisible();
+await expect(this.positiveText).toBeVisible();
 }
 }
