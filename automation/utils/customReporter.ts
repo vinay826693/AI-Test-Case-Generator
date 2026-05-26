@@ -4,8 +4,8 @@ import path from 'path';
 import type {
   FullResult,
   Reporter,
-  TestCase,
-  TestResult
+  Suite,
+  TestCase
 } from '@playwright/test/reporter';
 
 import {
@@ -19,88 +19,70 @@ import {
 
 class CustomReporter implements Reporter {
 
-  private passed = 0;
-  private failed = 0;
-  private skipped = 0;
+  private rootSuite!: Suite;
 
-  private processedTests =
-    new Set<string>();
-
-
-  onTestEnd(
-    test: TestCase,
-    result: TestResult
+  onBegin(
+    config: any,
+    suite: Suite
   ) {
-
-    // Unique id for each test
-    const testId =
-      test.titlePath().join(' > ');
-
-    // Ignore retries
-    if (
-      this.processedTests.has(
-        testId
-      )
-    ) {
-      return;
-    }
-
-    // Count only final result
-    if (
-      result.retry <
-      test.retries
-    ) {
-      return;
-    }
-
-    this.processedTests.add(
-      testId
-    );
-
-    switch (
-      result.status
-    ) {
-
-      case 'passed':
-        this.passed++;
-        break;
-
-      case 'failed':
-        this.failed++;
-        break;
-
-      case 'skipped':
-        this.skipped++;
-        break;
-    }
+    this.rootSuite = suite;
   }
 
   onEnd(
     result: FullResult
   ) {
 
+    let passed = 0;
+    let failed = 0;
+    let skipped = 0;
+
+    const allTests =
+      this.rootSuite.allTests();
+
+    allTests.forEach(
+      (test: TestCase) => {
+
+        const finalResult =
+          test.results[
+            test.results.length - 1
+          ];
+
+        switch (
+          finalResult?.status
+        ) {
+
+          case 'passed':
+            passed++;
+            break;
+
+          case 'failed':
+            failed++;
+            break;
+
+          case 'skipped':
+            skipped++;
+            break;
+        }
+      }
+    );
+
     const currentRun = {
 
       runDate:
-        new Date()
-        .toISOString(),
+        new Date().toISOString(),
 
       projectName:
         'AI_TEST_CASE_GENERATOR',
 
-      passed:
-        this.passed,
+      passed,
 
-      failed:
-        this.failed,
+      failed,
 
-      skipped:
-        this.skipped,
+      skipped,
 
       duration:
         `${(
-          result.duration /
-          1000
+          result.duration / 1000
         ).toFixed(2)}s`
     };
 
@@ -150,15 +132,23 @@ class CustomReporter implements Reporter {
     );
 
     console.log(
-      `Passed: ${this.passed}`
+      `Total: ${
+        passed +
+        failed +
+        skipped
+      }`
     );
 
     console.log(
-      `Failed: ${this.failed}`
+      `Passed: ${passed}`
     );
 
     console.log(
-      `Skipped: ${this.skipped}`
+      `Failed: ${failed}`
+    );
+
+    console.log(
+      `Skipped: ${skipped}`
     );
 
     console.log(
