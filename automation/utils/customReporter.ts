@@ -13,7 +13,9 @@ import {
   compareExecution
 } from './executionHistory';
 
-import { generateDashboard } from './generateReportDashboard';
+import {
+  generateDashboard
+} from './generateReportDashboard';
 
 class CustomReporter implements Reporter {
 
@@ -25,6 +27,14 @@ class CustomReporter implements Reporter {
     test: TestCase,
     result: TestResult
   ) {
+
+    // Ignore retry attempts
+    const isFinalAttempt =
+      result.retry === test.retries;
+
+    if (!isFinalAttempt) {
+      return;
+    }
 
     switch (result.status) {
 
@@ -46,36 +56,54 @@ class CustomReporter implements Reporter {
 
     const currentRun = {
 
-      runDate: new Date().toISOString(),
+      runDate:
+        new Date().toISOString(),
 
-      projectName: 'AI_TEST_CASE_GENERATOR',
+      projectName:
+        'AI_TEST_CASE_GENERATOR',
 
-      passed: this.passed,
+      passed:
+        this.passed,
 
-      failed: this.failed,
+      failed:
+        this.failed,
 
-      skipped: this.skipped,
+      skipped:
+        this.skipped,
 
-      duration: `${(result.duration / 1000).toFixed(2)}s`
+      duration:
+        `${(
+          result.duration / 1000
+        ).toFixed(2)}s`
     };
 
     const comparison =
-      compareExecution(currentRun);
+      compareExecution(
+        currentRun
+      );
 
-    saveExecutionHistory(currentRun);
+    saveExecutionHistory(
+      currentRun
+    );
 
     if (comparison) {
 
-      const getArrow = (value:number) => {
+      const getArrow = (
+        value:number
+      ) => {
 
-        if (value > 0) return '↑';
+        if (value > 0)
+          return '↑';
 
-        if (value < 0) return '↓';
+        if (value < 0)
+          return '↓';
 
         return '→';
       };
 
-      console.log('\n===== Execution Comparison =====');
+      console.log(
+        '\n===== Execution Comparison ====='
+      );
 
       console.log(
         `Passed: ${getArrow(
@@ -104,7 +132,8 @@ class CustomReporter implements Reporter {
 
     const reportData = {
 
-      projectName: currentRun.projectName,
+      projectName:
+        currentRun.projectName,
 
       currentRun,
 
@@ -114,11 +143,12 @@ class CustomReporter implements Reporter {
       comparison
     };
 
-    const reportPath = path.join(
-      process.cwd(),
-      'test-data',
-      'comparison-data.json'
-    );
+    const reportPath =
+      path.join(
+        process.cwd(),
+        'test-data',
+        'comparison-data.json'
+      );
 
     fs.writeFileSync(
       reportPath,
