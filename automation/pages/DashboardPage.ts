@@ -40,5 +40,4 @@ async verifyTestCaseGenerated(){
 await expect(this.positiveText)
 .toBeVisible();
 }
-
 }
