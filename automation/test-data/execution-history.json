@@ -1,0 +1,186 @@
+[
+  {
+    "runDate": "2026-05-26T05:28:42.730Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "14.97s"
+  },
+  {
+    "runDate": "2026-05-26T05:29:43.386Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "duration": "29.20s"
+  },
+  {
+    "runDate": "2026-05-26T05:34:33.307Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "14.73s"
+  },
+  {
+    "runDate": "2026-05-26T05:39:02.155Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "14.28s"
+  },
+  {
+    "runDate": "2026-05-26T05:48:47.297Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "14.31s"
+  },
+  {
+    "runDate": "2026-05-26T05:50:11.933Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "14.76s"
+  },
+  {
+    "runDate": "2026-05-26T05:51:47.402Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "14.93s"
+  },
+  {
+    "runDate": "2026-05-26T05:54:29.635Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "14.35s"
+  },
+  {
+    "runDate": "2026-05-26T05:57:21.997Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "14.45s"
+  },
+  {
+    "runDate": "2026-05-26T06:01:59.735Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "14.24s"
+  },
+  {
+    "runDate": "2026-05-26T06:08:49.451Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "14.47s"
+  },
+  {
+    "runDate": "2026-05-26T06:20:49.495Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "15.08s"
+  },
+  {
+    "runDate": "2026-05-26T06:22:31.457Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 1,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "48.82s"
+  },
+  {
+    "runDate": "2026-05-26T06:23:21.264Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "duration": "37.52s"
+  },
+  {
+    "runDate": "2026-05-26T06:33:41.380Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "14.33s"
+  },
+  {
+    "runDate": "2026-05-26T06:41:07.023Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "15.16s"
+  },
+  {
+    "runDate": "2026-05-26T06:44:30.504Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "duration": "33.44s"
+  },
+  {
+    "runDate": "2026-05-26T06:53:18.215Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "15.40s"
+  },
+  {
+    "runDate": "2026-05-26T07:00:11.233Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "14.88s"
+  },
+  {
+    "runDate": "2026-05-26T07:03:22.227Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "13.84s"
+  },
+  {
+    "runDate": "2026-05-26T07:07:51.287Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "13.89s"
+  },
+  {
+    "runDate": "2026-05-26T07:16:57.989Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "14.26s"
+  },
+  {
+    "runDate": "2026-05-26T07:22:02.993Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "duration": "14.26s"
+  }
+]
