@@ -17,58 +17,87 @@ const historyPath = path.join(
 );
 
 export function getHistory(): ExecutionHistory[] {
-  if (!fs.existsSync(historyPath)) {
+
+  if (
+    !fs.existsSync(historyPath)
+  ) {
+
     return [];
   }
 
-  const data = fs.readFileSync(
-    historyPath,
-    'utf-8'
-  ).trim();
+  const data =
+    fs.readFileSync(
+      historyPath,
+      'utf-8'
+    ).trim();
 
-  return data ? JSON.parse(data) : [];
+  if (!data) {
+    return [];
+  }
+
+  return JSON.parse(data);
 }
 
 export function saveExecutionHistory(
   executionData: ExecutionHistory
 ) {
-  const history = getHistory();
 
-  history.push(executionData);
+  const history =
+    getHistory();
+
+  history.push(
+    executionData
+  );
 
   fs.writeFileSync(
     historyPath,
-    JSON.stringify(history, null, 2)
+    JSON.stringify(
+      history,
+      null,
+      2
+    )
   );
 
-  console.log('Execution history saved');
+  console.log(
+    'Execution history saved'
+  );
 }
 
 export function compareExecution(
   current: ExecutionHistory
 ) {
-  const history = getHistory();
 
-  // Last saved run before current one
-  const previous =
-    history.length > 0
-      ? history[history.length - 1]
-      : null;
+  const history =
+    getHistory();
 
-  if (!previous) {
+  // No previous run exists
+  if (
+    history.length === 0
+  ) {
+
     return null;
   }
 
+  // Always use last completed execution
+  const previous =
+    history[
+      history.length - 1
+    ];
+
   return {
+
     previous,
 
     passedDiff:
-      current.passed - previous.passed,
+      current.passed -
+      previous.passed,
 
     failedDiff:
-      current.failed - previous.failed,
+      current.failed -
+      previous.failed,
 
     skippedDiff:
-      current.skipped - previous.skipped
+      current.skipped -
+      previous.skipped
   };
 }
