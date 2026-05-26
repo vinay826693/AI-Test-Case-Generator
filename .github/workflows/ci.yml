@@ -84,11 +84,3 @@ jobs:
           path: |
             automation/playwright-report/execution-dashboard.html
             automation/playwright-report/logo.jpeg
-
-      # Upload failed test artifacts
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: test-results
-          path: automation/test-results/
