@@ -12,4 +12,5 @@ test("Verify test case generation",async({dashboard})=>{
 await dashboard.generateTestCases("Login page with email and password");
 await dashboard.verifyTestCaseGenerated();
 });
+
 });
