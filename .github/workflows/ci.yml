@@ -2,99 +2,68 @@ name: AI Test Generator CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
-
   e2e-test:
 
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm ci
 
-    - name: Setup Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
+      - name: Install Backend Dependencies
+        working-directory: ./backend
+        run: npm ci
 
+      - name: Install Automation Dependencies
+        working-directory: ./automation
+        run: npm ci
 
-    # Install Frontend dependencies
-    - name: Install Frontend Dependencies
-      working-directory: ./frontend
-      run: npm install
+      - name: Install Playwright Browsers
+        working-directory: ./automation
+        run: npx playwright install --with-deps
 
+      - name: Start Backend
+        working-directory: ./backend
+        run: npm start &
 
-    # Install Backend dependencies
-    - name: Install Backend Dependencies
-      working-directory: ./backend
-      run: npm install
+      - name: Start Frontend
+        working-directory: ./frontend
+        run: npm run dev &
 
+      - name: Wait for Applications
+        run: |
+          npx wait-on http://localhost:5000
+          npx wait-on http://localhost:5173
 
-    # Install Automation dependencies
-    - name: Install Automation Dependencies
-      working-directory: ./automation
-      run: npm install
+      - name: Run Playwright Tests
+        working-directory: ./automation
+        run: npx playwright test
 
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: automation/playwright-report
 
-    # Install Playwright browsers
-    - name: Install Playwright Browsers
-      working-directory: ./automation
-      run: npx playwright install --with-deps
-
-
-    # Start Backend
-    - name: Start Backend Server
-      working-directory: ./backend
-      run: |
-        npm start &
-      env:
-        PORT: 5000
-
-
-    # Start Frontend
-    - name: Start Frontend Server
-      working-directory: ./frontend
-      run: |
-        npm run dev &
-      env:
-        CI: true
-
-
-    # Wait until both apps are available
-    - name: Wait for servers
-      run: |
-        npx wait-on http://localhost:5000
-        npx wait-on http://localhost:5173
-
-
-    # Execute Playwright tests
-    - name: Run Playwright Tests
-      working-directory: ./automation
-      run: npx playwright test
-
-
-    # Upload HTML report
-    - name: Upload Playwright Report
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: playwright-report
-        path: automation/playwright-report/
-
-
-    # Upload screenshots/videos if failed
-    - name: Upload Test Results
-      uses: actions/upload-artifact@v4
-      if: failure()
-      with:
-        name: test-results
-        path: automation/test-results/
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-results
+          path: automation/test-results

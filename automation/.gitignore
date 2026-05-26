@@ -6,3 +6,8 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+
+# Dashboard runtime data
+test-data/comparison-data.json
+test-data/execution-history.json
