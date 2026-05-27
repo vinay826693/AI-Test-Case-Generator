@@ -19,11 +19,12 @@ jobs:
 
     steps:
 
-      # Checkout code
+      # Checkout repository
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
           persist-credentials: true
+          fetch-depth: 0
 
       # Setup node
       - name: Setup Node
@@ -31,17 +32,17 @@ jobs:
         with:
           node-version: 20
 
-      # Backend dependencies
+      # Install backend dependencies
       - name: Install Backend Dependencies
         working-directory: ./backend
         run: npm ci
 
-      # Frontend dependencies
+      # Install frontend dependencies
       - name: Install Frontend Dependencies
         working-directory: ./frontend
         run: npm ci
 
-      # Automation dependencies
+      # Install automation dependencies
       - name: Install Automation Dependencies
         working-directory: ./automation
         run: npm ci
@@ -63,13 +64,13 @@ jobs:
         working-directory: ./frontend
         run: npm run dev &
 
-      # Wait for applications
+      # Wait for app startup
       - name: Wait for Applications
         run: |
           npx wait-on http://localhost:5000
           npx wait-on http://localhost:5173
 
-      # Run Playwright tests
+      # Execute Playwright tests
       - name: Run Playwright Tests
         working-directory: ./automation
         run: npx playwright test
@@ -95,7 +96,13 @@ jobs:
             echo "comparison-data.json not found"
           fi
 
-      # Save history into repository
+      # Pull latest repo updates
+      - name: Pull latest changes
+        if: always()
+        run: |
+          git pull origin ${{ github.ref_name }}
+
+      # Save execution history
       - name: Commit execution history
         if: always()
         run: |
@@ -120,7 +127,7 @@ jobs:
           name: playwright-report
           path: automation/playwright-report
 
-      # Upload test results if failure
+      # Upload test results if tests fail
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         if: failure()
