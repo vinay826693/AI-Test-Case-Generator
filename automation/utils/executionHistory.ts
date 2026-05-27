@@ -49,10 +49,14 @@ export function saveExecutionHistory(
     executionData
   );
 
+  // Keep only previous + current run
+  const latestTwoRuns =
+    history.slice(-2);
+
   fs.writeFileSync(
     historyPath,
     JSON.stringify(
-      history,
+      latestTwoRuns,
       null,
       2
     )
@@ -70,7 +74,6 @@ export function compareExecution(
   const history =
     getHistory();
 
-  // No previous run exists
   if (
     history.length === 0
   ) {
@@ -78,7 +81,7 @@ export function compareExecution(
     return null;
   }
 
-  // Always use last completed execution
+  // Last run becomes previous run
   const previous =
     history[
       history.length - 1
