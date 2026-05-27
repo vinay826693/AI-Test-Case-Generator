@@ -1,5 +1,8 @@
 name: AI Test Generator CI
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -58,7 +61,7 @@ jobs:
         working-directory: ./frontend
         run: npm run dev &
 
-      # Wait for app
+      # Wait for applications
       - name: Wait for Applications
         run: |
           npx wait-on http://localhost:5000
@@ -78,9 +81,12 @@ jobs:
           git add automation/test-data/execution-history.json
           git add automation/test-data/comparison-data.json
 
-          git diff --staged --quiet || git commit -m "Update execution history"
-
-          git push
+          if ! git diff --staged --quiet; then
+            git commit -m "Update execution history"
+            git push origin HEAD:${{ github.ref_name }}
+          else
+            echo "No changes to commit"
+          fi
 
       # Upload report
       - name: Upload Playwright Report
