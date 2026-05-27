@@ -8,23 +8,11 @@ private generateButton: Locator;
 private positiveText: Locator;
 
 constructor(page: Page){
-
 this.page = page;
-
-this.requirementInput =
-page.locator("textarea");
-
-this.generateButton =
-page.getByRole("button",{
-name:"Generate Test Cases"
-});
-
+this.requirementInput = page.locator("textarea");
+this.generateButton = page.getByRole("button",{name:"Generate Test Cases"});
 // More specific locator
-this.positiveText =
-page.getByRole("heading",{
-name:"Positive"
-});
-
+this.positiveText = page.getByRole("heading",{name:"Positive"});
 }
 
 async navigateToDashboard(){
