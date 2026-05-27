@@ -25,5 +25,4 @@ await this.loginButton.click();
 async verifySuccessfulLogin(){
 await expect(this.page).toHaveURL(/dashboard/);
 }
-
 }

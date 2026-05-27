@@ -10,7 +10,6 @@ this.historyLink=page.getByRole("link",{name:"History"});
 
 async navigateToHistory(){
 await this.historyLink.click();
-await this.page.waitForTimeout(2000);
 }
 
 async verifyRequirementExists(requirement:string){

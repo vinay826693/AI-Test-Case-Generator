@@ -1,5 +1,8 @@
 name: AI Test Generator CI
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -16,35 +19,40 @@ jobs:
 
     steps:
 
+      # Checkout repository
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
 
+      # Setup node
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # Backend dependencies
+      # Install backend dependencies
       - name: Install Backend Dependencies
         working-directory: ./backend
         run: npm ci
 
-      # Frontend dependencies
+      # Install frontend dependencies
       - name: Install Frontend Dependencies
         working-directory: ./frontend
         run: npm ci
 
-      # Automation dependencies
+      # Install automation dependencies
       - name: Install Automation Dependencies
         working-directory: ./automation
         run: npm ci
 
-      # Playwright browsers
+      # Install Playwright browsers
       - name: Install Playwright Browsers
         working-directory: ./automation
         run: npx playwright install --with-deps
 
-      # Start backend with secret
+      # Start backend
       - name: Start Backend
         working-directory: ./backend
         env:
@@ -56,16 +64,60 @@ jobs:
         working-directory: ./frontend
         run: npm run dev &
 
-      # Wait until apps are ready
+      # Wait for app startup
       - name: Wait for Applications
         run: |
           npx wait-on http://localhost:5000
           npx wait-on http://localhost:5173
 
-      # Run Playwright tests
+      # Execute Playwright tests
       - name: Run Playwright Tests
         working-directory: ./automation
         run: npx playwright test
+
+      # Debug generated files
+      - name: Debug generated files
+        if: always()
+        run: |
+          echo "===== execution-history ====="
+
+          if [ -f automation/test-data/execution-history.json ]; then
+            cat automation/test-data/execution-history.json
+          else
+            echo "execution-history.json not found"
+          fi
+
+          echo ""
+          echo "===== comparison-data ====="
+
+          if [ -f automation/test-data/comparison-data.json ]; then
+            cat automation/test-data/comparison-data.json
+          else
+            echo "comparison-data.json not found"
+          fi
+
+      # Pull latest repo updates
+      - name: Pull latest changes
+        if: always()
+        run: |
+          git pull origin ${{ github.ref_name }}
+
+      # Save execution history
+      - name: Commit execution history
+        if: always()
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+          git add automation/test-data/execution-history.json
+          git add automation/test-data/comparison-data.json
+
+          if ! git diff --staged --quiet; then
+            git commit -m "Update execution history"
+            git push origin HEAD:${{ github.ref_name }}
+          else
+            echo "No changes to commit"
+          fi
 
       # Upload Playwright report
       - name: Upload Playwright Report
@@ -73,4 +125,12 @@ jobs:
         if: always()
         with:
           name: playwright-report
-          path: automation/playwright-report/
+          path: automation/playwright-report
+
+      # Upload test results if tests fail
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-results
+          path: automation/test-results

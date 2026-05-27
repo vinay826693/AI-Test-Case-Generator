@@ -9,6 +9,3 @@ node_modules/
 
 
 
-# Dashboard runtime data
-test-data/comparison-data.json
-test-data/execution-history.json
