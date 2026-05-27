@@ -8,7 +8,7 @@ await login.loginIntoApplication();
 await dashboard.generateTestCases(requirement);
 });
 
-test.skip("Verify generated data saved in history",async({history})=>{
+test("Verify generated data saved in history",async({history})=>{
 await history.navigateToHistory();
 await history.verifyRequirementExists(requirement);
 });
