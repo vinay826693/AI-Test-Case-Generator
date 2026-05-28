@@ -13,6 +13,15 @@ pipeline {
 
     stages {
 
+        stage('Set Build Name') {
+            steps {
+                script {
+                    currentBuild.displayName =
+                    "#${BUILD_NUMBER} | ${params.BRANCH_NAME}"
+                }
+            }
+        }
+
         stage('Install Backend Dependencies') {
             steps {
                 dir('backend') {
