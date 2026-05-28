@@ -78,4 +78,14 @@ pipeline {
 
     }
 
+    post {
+
+        always {
+
+            archiveArtifacts artifacts: 'automation/playwright-report/**/*', fingerprint: true
+
+        }
+
+    }
+
 }
