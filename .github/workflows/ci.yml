@@ -70,6 +70,12 @@ jobs:
           npx wait-on http://localhost:5000
           npx wait-on http://localhost:5173
 
+      - name: Create .env file
+        working-directory: ./automation
+        run: |
+         echo "EMAIL=${{ secrets.EMAIL }}" >> .env
+         echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
+
       # Execute Playwright tests
       - name: Run Playwright Tests
         working-directory: ./automation
