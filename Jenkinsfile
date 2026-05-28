@@ -6,6 +6,11 @@ pipeline {
         nodejs "NodeJS20"
     }
 
+    environment {
+        EMAIL = "test@gmail.com"
+        PASSWORD = "test123"
+    }
+
     stages {
 
         stage('Install Backend Dependencies') {
@@ -69,16 +74,6 @@ pipeline {
                     sh 'npx playwright test'
                 }
             }
-        }
-
-    }
-
-    post {
-
-        always {
-
-            archiveArtifacts artifacts: 'automation/playwright-report/**/*', allowEmptyArchive: true
-
         }
 
     }
