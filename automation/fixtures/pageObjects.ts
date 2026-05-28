@@ -12,21 +12,6 @@ type Fixtures = {
 };
 
 const test = baseTest.extend<Fixtures>({
-  context: async ({ browser, browserName }, use) => {
-    // Only include microphone permission if browser is not WebKit
-    const context = await browser.newContext(
-      browserName === "webkit" ? {} : { permissions: ["microphone"] },
-    );
-    await use(context);
-    await context.close();
-  },
-
-  page: async ({ context }, use) => {
-    const page = await context.newPage();
-    await use(page);
-    await page.close();
-  },
-
   login: async ({ page }, use) => {
     const login = new LoginPage(page);
     await use(login);

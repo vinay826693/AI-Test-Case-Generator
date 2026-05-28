@@ -1,11 +1,13 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from "dotenv";
+dotenv.config();
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// import dotenv from 'dotenv';
-// import path from 'path';
+//import dotenv from 'dotenv';
+//import path from 'path';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
@@ -31,7 +33,8 @@ export default defineConfig({
     headless:true,
     screenshot:"only-on-failure",
     video:"retain-on-failure",
-    trace:"retain-on-failure"
+    trace:"retain-on-failure",
+    //storageState:"auth/user.json"
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     
@@ -39,10 +42,32 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
+    // {
+    //   name: "setup",
+    //   testMatch: /.*\.setup\.ts/,
+    // },
+
+    // {
+    //   name: 'chromium',
+    //   use: { ...devices['Desktop Chrome'] },
+    // },
+
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+    name: 'setup',
+    testMatch: /.*auth\.setup\.ts/,
+  },
+
+  {
+    name: 'chromium',
+
+    dependencies: ['setup'],
+
+    use: {
+      ...devices['Desktop Chrome'],
+
+      storageState: 'auth/user.json',
     },
+  },
 
     // {
     //   name: 'firefox',
@@ -82,3 +107,8 @@ export default defineConfig({
   //   reuseExistingServer: !process.env.CI,
   // },
 });
+
+
+
+
+
