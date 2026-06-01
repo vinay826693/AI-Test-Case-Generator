@@ -3,7 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test",
+    "ui": "npx playwright test --ui",
+    "headed": "npx playwright test --headed",
+    "api": "npx playwright test --grep @api",
+    "accessibility": "npx playwright test --grep @accessibility",
+    "report": "npx playwright show-report",
+    "run-test-without-max-fail": "npx playwright test --max-failures=0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -13,6 +21,7 @@
     "wait-on": "^9.0.10"
   },
   "dependencies": {
+    "@axe-core/playwright": "^4.11.3",
     "dotenv": "^17.4.2"
   }
 }

@@ -92,6 +92,8 @@ pipeline {
         always {
 
             archiveArtifacts artifacts: 'automation/playwright-report/**/*', fingerprint: true
+            
+            archiveArtifacts artifacts: 'automation/test-results/*-accessibility-report.json', fingerprint: true
 
         }
 

@@ -133,6 +133,15 @@ jobs:
           name: playwright-report
           path: automation/playwright-report
 
+      # Upload Accessibility Reports
+      - name: Upload Accessibility Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: accessibility-reports
+          path: automation/test-results/*-accessibility-report.json
+          if-no-files-found: warn
+
       # Upload test results if tests fail
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
