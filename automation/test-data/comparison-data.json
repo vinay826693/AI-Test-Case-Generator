@@ -1,6 +1,14 @@
 {
   "projectName": "AI_TEST_CASE_GENERATOR",
   "currentRun": {
+    "runDate": "2026-06-01T11:52:30.882Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 11,
+    "failed": 3,
+    "skipped": 0,
+    "duration": "32.70s"
+  },
+  "previousRun": {
     "runDate": "2026-06-01T06:43:30.374Z",
     "projectName": "AI_TEST_CASE_GENERATOR",
     "passed": 6,
@@ -8,25 +16,17 @@
     "skipped": 0,
     "duration": "18.96s"
   },
-  "previousRun": {
-    "runDate": "2026-05-28T10:01:59.129Z",
-    "projectName": "AI_TEST_CASE_GENERATOR",
-    "passed": 6,
-    "failed": 2,
-    "skipped": 0,
-    "duration": "18.68s"
-  },
   "comparison": {
     "previous": {
-      "runDate": "2026-05-28T10:01:59.129Z",
+      "runDate": "2026-06-01T06:43:30.374Z",
       "projectName": "AI_TEST_CASE_GENERATOR",
       "passed": 6,
       "failed": 2,
       "skipped": 0,
-      "duration": "18.68s"
+      "duration": "18.96s"
     },
-    "passedDiff": 0,
-    "failedDiff": 0,
+    "passedDiff": 5,
+    "failedDiff": 1,
     "skippedDiff": 0
   }
 }
