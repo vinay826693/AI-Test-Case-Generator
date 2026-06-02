@@ -9,5 +9,16 @@ node_modules/
 auth/user.json
 .env
 
+# Performance Reports
+automation/performance/reports/
+
+# k6 Bundled Files
+automation/dist/
+
+# Visual snapshots
+automation/tests/visual/**/*.png
+
+
+
 
 

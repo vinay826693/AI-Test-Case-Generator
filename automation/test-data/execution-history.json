@@ -1,9 +1,9 @@
 [
   {
-    "runDate": "2026-06-01T06:43:30.374Z",
+    "runDate": "2026-06-02T08:59:21.272Z",
     "projectName": "AI_TEST_CASE_GENERATOR",
-    "passed": 6,
-    "failed": 2,
+    "passed": 4,
+    "failed": 0,
     "skipped": 0,
     "duration": "18.96s"
   },

@@ -11,17 +11,17 @@
   "previousRun": {
     "runDate": "2026-06-01T06:43:30.374Z",
     "projectName": "AI_TEST_CASE_GENERATOR",
-    "passed": 6,
-    "failed": 2,
+    "passed": 4,
+    "failed": 0,
     "skipped": 0,
-    "duration": "18.96s"
+    "duration": "5.33s"
   },
   "comparison": {
     "previous": {
       "runDate": "2026-06-01T06:43:30.374Z",
       "projectName": "AI_TEST_CASE_GENERATOR",
-      "passed": 6,
-      "failed": 2,
+      "passed": 4,
+      "failed": 0,
       "skipped": 0,
       "duration": "18.96s"
     },

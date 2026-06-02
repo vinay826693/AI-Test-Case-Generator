@@ -95,6 +95,8 @@ pipeline {
             
             archiveArtifacts artifacts: 'automation/test-results/*-accessibility-report.json', fingerprint: true
 
+            archiveArtifacts artifacts: 'automation/test-results/**/*', fingerprint: true
+
         }
 
     }

@@ -10,14 +10,24 @@
     "api": "npx playwright test --grep @api",
     "accessibility": "npx playwright test --grep @accessibility",
     "report": "npx playwright show-report",
-    "run-test-without-max-fail": "npx playwright test --max-failures=0"
+    "run-test-without-max-fail": "npx playwright test --max-failures=0",
+    "baseline-screenshot-command": "npx playwright test tests/visual --update-snapshots",
+    "visual": "npx playwright test --grep @visual",
+    "k6:build:smoke": "esbuild performance/generateTestCases.smoke.ts --bundle --platform=neutral --external:k6 --external:k6/* --outfile=dist/smoke.js",
+    "k6:build:load": "esbuild performance/generateTestCases.load.ts --bundle --platform=neutral --external:k6 --external:k6/* --outfile=dist/load.js",
+    "k6:build:stress": "esbuild performance/generateTestCases.stress.ts --bundle --platform=neutral --external:k6 --external:k6/* --outfile=dist/stress.js",
+    "k6:smoke": "npm run k6:build:smoke && k6 run --summary-export=performance/reports/smoke-report.json dist/smoke.js",
+    "k6:load": "npm run k6:build:load && k6 run --summary-export=performance/reports/load-report.json dist/load.js",
+    "k6:stress": "npm run k6:build:stress && k6 run --summary-export=performance/reports/stress-report.json dist/stress.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.60.0",
+    "@types/k6": "^2.0.0",
     "@types/node": "^25.9.1",
+    "esbuild": "^0.28.0",
     "wait-on": "^9.0.10"
   },
   "dependencies": {
