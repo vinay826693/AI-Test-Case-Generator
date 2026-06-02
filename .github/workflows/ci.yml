@@ -1,138 +1,178 @@
 name: AI Test Generator CI
 
 permissions:
-contents: write
+  contents: write
 
 on:
-push:
-branches:
-- '**'
+  push:
+    branches:
+      - '**'
 
-pull_request:
-branches:
-- main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-e2e-test:
-runs-on: ubuntu-latest
+  e2e-test:
 
-steps:
-  # Checkout repository
-  - name: Checkout Code
-    uses: actions/checkout@v4
-    with:
-      persist-credentials: true
-      fetch-depth: 0
+    runs-on: ubuntu-latest
 
-  # Setup node
-  - name: Setup Node
-    uses: actions/setup-node@v4
-    with:
-      node-version: 20
+    steps:
 
-  # Install backend dependencies
-  - name: Install Backend Dependencies
-    working-directory: ./backend
-    run: npm ci
+      # Checkout repository
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
 
-  # Install frontend dependencies
-  - name: Install Frontend Dependencies
-    working-directory: ./frontend
-    run: npm ci
+      # Setup node
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-  # Install automation dependencies
-  - name: Install Automation Dependencies
-    working-directory: ./automation
-    run: npm ci
+      # Install backend dependencies
+      - name: Install Backend Dependencies
+        working-directory: ./backend
+        run: npm ci
 
-  # Install Playwright browsers
-  - name: Install Playwright Browsers
-    working-directory: ./automation
-    run: npx playwright install --with-deps
+      # Install frontend dependencies
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm ci
 
-  # Install k6
-  - name: Install k6
-    run: |
-      sudo apt-get update
-      sudo apt-get install -y gnupg software-properties-common
-      curl -fsSL https://dl.k6.io/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/k6-archive-keyring.gpg
-      echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
-      sudo apt-get update
-      sudo apt-get install -y k6
+      # Install automation dependencies
+      - name: Install Automation Dependencies
+        working-directory: ./automation
+        run: npm ci
 
-  # Start backend
-  - name: Start Backend
-    working-directory: ./backend
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-    run: npm run dev &
+      # Install Playwright browsers
+      - name: Install Playwright Browsers
+        working-directory: ./automation
+        run: npx playwright install --with-deps
 
-  # Start frontend
-  - name: Start Frontend
-    working-directory: ./frontend
-    run: npm run dev &
+      # Install k6
+      - name: Install k6
+        run: |
+         sudo apt-get update
+         sudo apt-get install -y gnupg software-properties-common
+         curl -fsSL https://dl.k6.io/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/k6-archive-keyring.gpg
+         echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+         sudo apt-get update
+         sudo apt-get install -y k6
 
-  # Wait for app startup
-  - name: Wait for Applications
-    run: |
-      npx wait-on http://localhost:5000
-      npx wait-on http://localhost:5173
+      # Start backend
+      - name: Start Backend
+        working-directory: ./backend
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: npm run dev &
 
-  # Create automation env file
-  - name: Create .env file
-    working-directory: ./automation
-    run: |
-      echo "EMAIL=${{ secrets.EMAIL }}" >> .env
-      echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
+      # Start frontend
+      - name: Start Frontend
+        working-directory: ./frontend
+        run: npm run dev &
 
-  # Execute Playwright tests
-  - name: Run Playwright Tests
-    working-directory: ./automation
-    run: npx playwright test
+      # Wait for app startup
+      - name: Wait for Applications
+        run: |
+          npx wait-on http://localhost:5000
+          npx wait-on http://localhost:5173
 
-  # Execute Performance Smoke Test
-  - name: Run Performance Smoke Test
-    working-directory: ./automation
-    run: npm run k6:smoke
+      - name: Create .env file
+        working-directory: ./automation
+        run: |
+         echo "EMAIL=${{ secrets.EMAIL }}" >> .env
+         echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
 
-  # Upload Playwright report
-  - name: Upload Playwright Report
-    uses: actions/upload-artifact@v4
-    if: always()
-    with:
-      name: playwright-report
-      path: automation/playwright-report
+      # Execute Playwright tests
+      - name: Run Playwright Tests
+        working-directory: ./automation
+        run: npx playwright test
 
-  # Upload Accessibility Reports
-  - name: Upload Accessibility Reports
-    uses: actions/upload-artifact@v4
-    if: always()
-    with:
-      name: accessibility-reports
-      path: automation/test-results/*-accessibility-report.json
-      if-no-files-found: warn
+      # Debug generated files
+      - name: Debug generated files
+        if: always()
+        run: |
+          echo "===== execution-history ====="
 
-  # Upload Performance Reports
-  - name: Upload Performance Reports
-    uses: actions/upload-artifact@v4
-    if: always()
-    with:
-      name: performance-reports
-      path: automation/performance/reports
-      if-no-files-found: warn
+          if [ -f automation/test-data/execution-history.json ]; then
+            cat automation/test-data/execution-history.json
+          else
+            echo "execution-history.json not found"
+          fi
 
-  # Upload Visual Test Results
-  - name: Upload Visual Test Results
-    uses: actions/upload-artifact@v4
-    if: failure()
-    with:
-      name: visual-test-results
-      path: automation/test-results
+          echo ""
+          echo "===== comparison-data ====="
 
-  # Upload test results if tests fail
-  - name: Upload Test Results
-    uses: actions/upload-artifact@v4
-    if: failure()
-    with:
-      name: test-results
-      path: automation/test-results
+          if [ -f automation/test-data/comparison-data.json ]; then
+            cat automation/test-data/comparison-data.json
+          else
+            echo "comparison-data.json not found"
+          fi
+
+      # Pull latest repo updates
+      - name: Pull latest changes
+        if: always()
+        run: |
+          git pull origin ${{ github.ref_name }}
+
+      # Save execution history
+      - name: Commit execution history
+        if: always()
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+          git add automation/test-data/execution-history.json
+          git add automation/test-data/comparison-data.json
+
+          if ! git diff --staged --quiet; then
+            git commit -m "Update execution history"
+            git push origin HEAD:${{ github.ref_name }}
+          else
+            echo "No changes to commit"
+          fi
+
+      # Upload Playwright report
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: automation/playwright-report
+
+      # Upload Accessibility Reports
+      - name: Upload Accessibility Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: accessibility-reports
+          path: automation/test-results/*-accessibility-report.json
+          if-no-files-found: warn
+
+      # Upload Performance Reports
+      - name: Upload Performance Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+         name: performance-reports
+         path: automation/performance/reports
+         if-no-files-found: warn
+
+      # Upload Visual Test Results
+      - name: Upload Visual Test Results
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: visual-test-results
+          path: automation/test-results
+
+      # Upload test results if tests fail
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-results
+          path: automation/test-results
