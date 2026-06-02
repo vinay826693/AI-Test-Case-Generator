@@ -14,11 +14,9 @@ branches:
 
 jobs:
 e2e-test:
-
 runs-on: ubuntu-latest
 
 steps:
-
   # Checkout repository
   - name: Checkout Code
     uses: actions/checkout@v4
@@ -96,50 +94,6 @@ steps:
   - name: Run Performance Smoke Test
     working-directory: ./automation
     run: npm run k6:smoke
-
-  # Debug generated files
-  - name: Debug generated files
-    if: always()
-    run: |
-      echo "===== execution-history ====="
-
-      if [ -f automation/test-data/execution-history.json ]; then
-        cat automation/test-data/execution-history.json
-      else
-        echo "execution-history.json not found"
-      fi
-
-      echo ""
-      echo "===== comparison-data ====="
-
-      if [ -f automation/test-data/comparison-data.json ]; then
-        cat automation/test-data/comparison-data.json
-      else
-        echo "comparison-data.json not found"
-      fi
-
-  # Pull latest repo updates
-  - name: Pull latest changes
-    if: always()
-    run: |
-      git pull origin ${{ github.ref_name }}
-
-  # Save execution history
-  - name: Commit execution history
-    if: always()
-    run: |
-      git config --global user.name "github-actions"
-      git config --global user.email "github-actions@github.com"
-
-      git add automation/test-data/execution-history.json
-      git add automation/test-data/comparison-data.json
-
-      if ! git diff --staged --quiet; then
-        git commit -m "Update execution history"
-        git push origin HEAD:${{ github.ref_name }}
-      else
-        echo "No changes to commit"
-      fi
 
   # Upload Playwright report
   - name: Upload Playwright Report
