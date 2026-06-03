@@ -86,6 +86,16 @@ jobs:
          echo "EMAIL=${{ secrets.EMAIL }}" >> .env
          echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
 
+      - name: Generate Linux Snapshots
+        working-directory: ./automation
+        run: npx playwright test tests/visual --update-snapshots
+
+      - name: Upload Linux Snapshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-snapshots
+          path: automation/tests/visual
+
       # Execute Playwright tests
       - name: Run Playwright Tests
         working-directory: ./automation

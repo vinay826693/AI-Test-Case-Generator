@@ -15,8 +15,7 @@ automation/performance/reports/
 # k6 Bundled Files
 automation/dist/
 
-# Visual snapshots
-automation/tests/visual/**/*.png
+
 
 
 
