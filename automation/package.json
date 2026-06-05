@@ -18,7 +18,9 @@
     "k6:build:stress": "esbuild performance/generateTestCases.stress.ts --bundle --platform=neutral --external:k6 --external:k6/* --outfile=dist/stress.js",
     "k6:smoke": "mkdir -p performance/reports && npm run k6:build:smoke && k6 run --summary-export=performance/reports/smoke-report.json dist/smoke.js",
     "k6:load": "npm run k6:build:load && k6 run --summary-export=performance/reports/load-report.json dist/load.js",
-    "k6:stress": "npm run k6:build:stress && k6 run --summary-export=performance/reports/stress-report.json dist/stress.js"
+    "k6:stress": "npm run k6:build:stress && k6 run --summary-export=performance/reports/stress-report.json dist/stress.js",
+    "lighthouse": "mkdir -p lighthouse/reports && npx lighthouse http://localhost:5173 --output=json --output-path=./lighthouse/reports/report.json --chrome-flags='--headless'",
+    "lighthouse:summary": "tsx lighthouse/lighthouseSummary.ts"
   },
   "keywords": [],
   "author": "",
@@ -27,7 +29,10 @@
     "@playwright/test": "^1.60.0",
     "@types/k6": "^2.0.0",
     "@types/node": "^25.9.1",
+    "chrome-launcher": "^1.2.1",
     "esbuild": "^0.28.0",
+    "lighthouse": "^13.3.0",
+    "tsx": "^4.22.4",
     "wait-on": "^9.0.10"
   },
   "dependencies": {

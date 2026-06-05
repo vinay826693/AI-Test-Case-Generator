@@ -17,6 +17,12 @@ automation/dist/
 
 .DS_Store
 
+# Lighthouse Reports
+lighthouse/reports/
+
+# Lighthouse Build
+dist/lighthouse.js
+
 
 
 

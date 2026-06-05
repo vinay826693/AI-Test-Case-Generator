@@ -97,6 +97,22 @@ jobs:
         working-directory: ./automation
         run: npm run k6:smoke
 
+      # Execute Lighthouse Audit
+      - name: Run Lighthouse Audit
+        if: always()
+        working-directory: ./automation
+        run: npm run lighthouse
+
+      - name: Run Lighthouse Summary
+        if: always()
+        working-directory: ./automation
+        run: |
+         if [ -f lighthouse/reports/report.json ]; then
+           npm run lighthouse:summary
+         else
+           echo "Lighthouse report not found"
+         fi
+
       # Debug generated files
       - name: Debug generated files
         if: always()
@@ -166,6 +182,13 @@ jobs:
          name: performance-reports
          path: automation/performance/reports
          if-no-files-found: warn
+
+      - name: Upload Lighthouse Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+         name: lighthouse-reports
+         path: automation/lighthouse/reports
 
       # Upload Visual Test Results
       - name: Upload Visual Test Results
