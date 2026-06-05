@@ -90,6 +90,10 @@ jobs:
       - name: Run Playwright Tests
         working-directory: ./automation
         run: npx playwright test
+
+      - name: Create Performance Report Directory
+        working-directory: ./automation
+        run: mkdir -p performance/reports
       
       # Execute Performance Smoke Test
       - name: Run Performance Smoke Test
