@@ -10,7 +10,7 @@ auth/user.json
 .env
 
 # Performance Reports
-automation/performance/reports/
+performance/reports/*.json
 
 # k6 Bundled Files
 automation/dist/

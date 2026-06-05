@@ -90,6 +90,11 @@ jobs:
       - name: Run Playwright Tests
         working-directory: ./automation
         run: npx playwright test
+      
+      # Execute Performance Smoke Test
+      - name: Run Performance Smoke Test
+        working-directory: ./automation
+        run: npm run k6:smoke
 
       # Debug generated files
       - name: Debug generated files
