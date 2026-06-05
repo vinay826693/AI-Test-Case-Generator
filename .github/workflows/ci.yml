@@ -93,6 +93,7 @@ jobs:
       
       # Execute Performance Smoke Test
       - name: Run Performance Smoke Test
+        if: always()
         working-directory: ./automation
         run: npm run k6:smoke
 
