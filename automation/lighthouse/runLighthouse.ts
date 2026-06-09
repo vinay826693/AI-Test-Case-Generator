@@ -1,7 +1,7 @@
+console.log('MULTI PAGE LIGHTHOUSE RUNNING');
 import lighthouse from 'lighthouse';
 import { launch } from 'chrome-launcher';
 import fs from 'fs';
-import { generateSummary } from './lighthouseSummary';
 
 async function runLighthouse() {
 
@@ -9,25 +9,46 @@ async function runLighthouse() {
     chromeFlags: ['--headless']
   });
 
-  const result = await lighthouse(
-    'http://localhost:5173',
-    {
-      port: chrome.port,
-      output: 'json'
-    }
-  );
-
   fs.mkdirSync(
     'lighthouse/reports',
     { recursive: true }
   );
 
-  fs.writeFileSync(
-    'lighthouse/reports/report.json',
-    result.report as string
-  );
+  const pages = [
+    {
+      name: 'dashboard',
+      url: 'http://localhost:5173/dashboard'
+    },
+    {
+      name: 'history',
+      url: 'http://localhost:5173/history'
+    },
+    {
+      name: 'settings',
+      url: 'http://localhost:5173/settings'
+    }
+  ];
 
-  console.log('Lighthouse report generated');
+  for (const page of pages) {
+    console.log(`Auditing: ${page.url}`);
+
+    const result = await lighthouse(
+      page.url,
+      {
+        port: chrome.port,
+        output: 'json'
+      }
+    );
+
+    fs.writeFileSync(
+      `lighthouse/reports/${page.name}-report.json`,
+      result.report as string
+    );
+
+    console.log(
+      `${page.name} report generated`
+    );
+  }
 
   await chrome.kill();
 }
