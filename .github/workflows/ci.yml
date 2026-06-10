@@ -97,6 +97,7 @@ jobs:
         working-directory: ./automation
         run: npm run k6:smoke
 
+      # Create the reports folder
       - name: Create Lighthouse Reports Directory
         if: always()
         working-directory: ./automation
@@ -107,26 +108,6 @@ jobs:
         if: always()
         working-directory: ./automation
         run: npm run lighthouse
-
-      # - name: Run Lighthouse Summary
-      #   if: always()
-      #   working-directory: ./automation
-      #   run: |
-      #    if [ -f lighthouse/reports/report.json ]; then
-      #      npm run lighthouse:summary
-      #    else
-      #      echo "Lighthouse report not found"
-      #    fi
-
-      - name: Run Lighthouse Summary
-        if: always()
-        working-directory: ./automation
-        run: |
-         if ls lighthouse/reports/*.json 1> /dev/null 2>&1; then
-           npm run lighthouse:summary
-         else
-           echo "No Lighthouse JSON reports found"
-         fi
 
       # Debug generated files
       - name: Debug generated files
