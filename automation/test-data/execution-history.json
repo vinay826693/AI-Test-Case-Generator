@@ -1,18 +1,18 @@
 [
   {
-    "runDate": "2026-06-10T05:25:10.161Z",
-    "projectName": "AI_TEST_CASE_GENERATOR",
-    "passed": 14,
-    "failed": 3,
-    "skipped": 0,
-    "duration": "35.85s"
-  },
-  {
     "runDate": "2026-06-10T05:34:56.655Z",
     "projectName": "AI_TEST_CASE_GENERATOR",
     "passed": 14,
     "failed": 3,
     "skipped": 0,
     "duration": "34.40s"
+  },
+  {
+    "runDate": "2026-06-10T05:48:53.185Z",
+    "projectName": "AI_TEST_CASE_GENERATOR",
+    "passed": 14,
+    "failed": 3,
+    "skipped": 0,
+    "duration": "34.37s"
   }
 ]
