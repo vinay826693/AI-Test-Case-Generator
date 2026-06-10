@@ -98,6 +98,7 @@ jobs:
         run: npm run k6:smoke
 
       - name: Create Lighthouse Reports Directory
+        if: always()
         working-directory: ./automation
         run: mkdir -p lighthouse/reports
 
