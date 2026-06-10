@@ -23,7 +23,8 @@
     "lighthouse:dashboard": "npx lighthouse http://localhost:5173/dashboard --output=json --output=html --output-path=./lighthouse/reports/dashboard-report --chrome-flags='--headless'",
     "lighthouse:history": "npx lighthouse http://localhost:5173/history --output=json --output=html --output-path=./lighthouse/reports/history-report --chrome-flags='--headless'",
     "lighthouse:settings": "npx lighthouse http://localhost:5173/settings --output=json --output=html --output-path=./lighthouse/reports/settings-report --chrome-flags='--headless'",
-    "lighthouse": "npm run lighthouse:dashboard && npm run lighthouse:history && npm run lighthouse:settings"
+    "lighthouse": "npm run lighthouse:dashboard && npm run lighthouse:history && npm run lighthouse:settings",
+    "security:scan": "bash security/zap-scan.sh"
 
     
   },

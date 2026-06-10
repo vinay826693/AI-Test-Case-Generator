@@ -23,6 +23,8 @@ lighthouse/reports/
 # Lighthouse Build
 dist/lighthouse.js
 
+# OWASP ZAP Reports
+security/reports/
 
 
 

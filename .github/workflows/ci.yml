@@ -109,6 +109,18 @@ jobs:
         working-directory: ./automation
         run: npm run lighthouse
 
+      # Create security report folder
+      - name: Create Security Reports Directory
+        if: always()
+        working-directory: ./automation
+        run: mkdir -p security/reports
+
+      # Run ZAP Scan
+      - name: Run OWASP ZAP Scan
+        if: always()
+        working-directory: ./automation
+        run: npm run security:scan
+
       # Debug generated files
       - name: Debug generated files
         if: always()
@@ -185,6 +197,14 @@ jobs:
         with:
          name: lighthouse-reports
          path: automation/lighthouse/reports
+
+      - name: Upload Security Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+         name: security-reports
+         path: automation/security/reports
+         if-no-files-found: warn
 
       # Upload Visual Test Results
       - name: Upload Visual Test Results
