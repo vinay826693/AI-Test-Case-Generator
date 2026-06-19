@@ -121,6 +121,9 @@ jobs:
         working-directory: ./automation
         run: npm run security:proxy:start
 
+      - name: Wait for ZAP
+        run: sleep 20
+
       # Run Authenticated Security Tests
       - name: Run Authenticated Security Tests
         if: always()
