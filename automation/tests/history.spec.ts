@@ -8,7 +8,7 @@ test.describe("History Test Cases", () => {
     await dashboard.generateTestCases(requirement);
   });
 
-  test("Verify generated data saved in history", async ({ history }) => {
+  test("@security Verify generated data saved in history", async ({ history }) => {
     await history.navigateToHistory();
     await history.verifyRequirementExists(requirement);
   });

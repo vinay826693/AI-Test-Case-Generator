@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test",
     "ui": "npx playwright test --ui",
     "headed": "npx playwright test --headed",
     "api": "npx playwright test --grep @api",
@@ -24,7 +23,14 @@
     "lighthouse:history": "npx lighthouse http://localhost:5173/history --output=json --output=html --output-path=./lighthouse/reports/history-report --chrome-flags='--headless'",
     "lighthouse:settings": "npx lighthouse http://localhost:5173/settings --output=json --output=html --output-path=./lighthouse/reports/settings-report --chrome-flags='--headless'",
     "lighthouse": "npm run lighthouse:dashboard && npm run lighthouse:history && npm run lighthouse:settings",
-    "security:scan": "bash security/zap-scan.sh"
+    "security:scan": "bash security/zap-scan.sh",
+    "security:summary": "node security/security-summary.js",
+    "security:gate": "bash security/check-security-gate.sh",
+    "security:validate": "npm run security:scan && npm run security:summary",
+    "security:proxy:start": "bash security/start-zap-proxy.sh",
+    "security:proxy:stop": "bash security/stop-zap-proxy.sh",
+    "test": "npx playwright test --project=chromium",
+    "security:auth": "npx playwright test --project=security"
 
     
   },

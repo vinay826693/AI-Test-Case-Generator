@@ -5,7 +5,7 @@ test.describe("Dashboard Test Cases", () => {
     await dashboard.navigateToDashboard();
   });
 
-  test("Verify test case generation", async ({ dashboard }) => {
+  test("@security Verify test case generation", async ({ dashboard }) => {
     await dashboard.generateTestCases("Login page with email and password");
     await dashboard.verifyTestCaseGenerated();
   });

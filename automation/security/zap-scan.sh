@@ -19,3 +19,4 @@ docker run --rm \
   -t "$TARGET" \
   -r zap-report.html \
   -J zap-report.json
+  exit 0

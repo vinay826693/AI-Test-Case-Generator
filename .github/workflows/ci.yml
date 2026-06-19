@@ -89,7 +89,7 @@ jobs:
       # Execute Playwright tests
       - name: Run Playwright Tests
         working-directory: ./automation
-        run: npx playwright test
+        run: npm test
       
       # Execute Performance Smoke Test
       - name: Run Performance Smoke Test
@@ -115,11 +115,29 @@ jobs:
         working-directory: ./automation
         run: mkdir -p security/reports
 
-      # Run ZAP Scan
-      - name: Run OWASP ZAP Scan
+      # Start ZAP Proxy
+      - name: Start ZAP Proxy
         if: always()
         working-directory: ./automation
-        run: npm run security:scan
+        run: npm run security:proxy:start
+
+      # Run Authenticated Security Tests
+      - name: Run Authenticated Security Tests
+        if: always()
+        working-directory: ./automation
+        run: npm run security:auth
+
+      # Generate ZAP Security Report & Summary
+      - name: Run OWASP ZAP Security Validation
+        if: always()
+        working-directory: ./automation
+        run: npm run security:validate
+
+      # Stop ZAP Proxy
+      - name: Stop ZAP Proxy
+        if: always()
+        working-directory: ./automation
+        run: npm run security:proxy:stop
 
       # Debug generated files
       - name: Debug generated files

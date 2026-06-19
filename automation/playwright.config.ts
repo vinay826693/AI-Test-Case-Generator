@@ -64,9 +64,26 @@ export default defineConfig({
 
     use: {
       ...devices['Desktop Chrome'],
-
       storageState: 'auth/user.json',
     },
+  },
+
+  {
+    name: 'security',
+    grep: /@security/,
+
+    dependencies: ['setup'],
+
+    use: {
+      ...devices['Desktop Chrome'],
+
+      storageState: 'auth/user.json',
+      baseURL: 'http://host.docker.internal:5173',
+
+      proxy: {
+        server: 'http://127.0.0.1:8090'
+      }
+    }
   },
 
     // {
