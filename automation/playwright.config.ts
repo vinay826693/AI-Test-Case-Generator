@@ -78,7 +78,9 @@ export default defineConfig({
       ...devices['Desktop Chrome'],
 
       storageState: 'auth/user.json',
-      baseURL: 'http://host.docker.internal:5173',
+      baseURL: process.env.CI
+      ? 'http://localhost:5173'
+      : 'http://host.docker.internal:5173',
 
       proxy: {
         server: 'http://127.0.0.1:8090'
